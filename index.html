@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tulio - Elecciones Presidenciales SA-MP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        /*--------------------------------------------------------------
+        # Reset y General
+        --------------------------------------------------------------*/
+        :root {
+            --color-primary-blue: #002868;
+            --color-secondary-red: #BF0A30;
+            --color-white: #FFFFFF;
+            --color-text-dark: #333333;
+            --color-text-light: #555555;
+            --color-background-light: #f7f7f7;
+            --header-height: 75px; /* Altura estimada del header, ajustar si es necesario */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+          background: var(--color-white);
+          color: var(--color-text-dark);
+          font-family: "Open Sans", sans-serif;
+          line-height: 1.6;
+        }
+
+        a {
+          color: var(--color-secondary-red);
+          transition: 0.3s;
+          text-decoration: none;
+        }
+        a:hover {
+          color: #D62828;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+          font-family: "Montserrat", sans-serif;
+          font-weight: 700;
+          color: var(--color-primary-blue);
+          margin-bottom: 15px;
+        }
+        h1 { font-size: 2.5em; }
+        h2 { font-size: 2em; }
+        h3 { font-size: 1.75em; }
+        h4 { font-size: 1.25em; }
+
+        p {
+          margin-bottom: 1rem;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .text-red { color: var(--color-secondary-red) !important; }
+
+        .btn-get-started {
+          font-family: "Montserrat", sans-serif;
+          font-weight: 500;
+          font-size: 16px;
+          letter-spacing: 1px;
+          display: inline-block;
+          padding: 10px 32px;
+          border-radius: 50px;
+          transition: 0.5s;
+          color: var(--color-white);
+          background: var(--color-secondary-red);
+          border: 2px solid var(--color-secondary-red);
+        }
+        .btn-get-started:hover {
+          background: transparent;
+          border-color: var(--color-white); /* Para la sección hero */
+          color: var(--color-white);
+        }
+
+        /* Sections Header */
+        .section-header {
+            text-align: center;
+            padding-bottom: 40px;
+        }
+        .section-header h3 {
+          font-size: 32px; /* Ajustado */
+          margin-bottom: 10px;
+        }
+        .section-header h3::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--color-secondary-red);
+            margin: 8px auto 0;
+        }
+        .section-header p {
+          color: var(--color-text-light);
+          width: 60%;
+          margin: 0 auto;
+          max-width: 700px;
+        }
+
+        /*--------------------------------------------------------------
+        # Header
+        --------------------------------------------------------------*/
+        #header {
+          height: var(--header-height);
+          position: fixed;
+          left: 0;
+          top: 0;
+          right: 0;
+          transition: all 0.3s;
+          z-index: 997;
+          background-color: var(--color-white);
+          box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+          display: flex; /* Usar flexbox para alinear items */
+          align-items: center; /* Centrar verticalmente los items */
+        }
+        #header .container { /* El container del header también usará flex */
+            display: flex;
+            justify-content: space-between; /* Logo a la izq, menú a la der */
+            align-items: center;
+            width: 100%; /* Para que el space-between funcione bien */
+        }
+
+        #header #logo {
+          /* float: left; ya no es necesario con flexbox */
+        }
+        #header #logo h1 {
+          font-size: 26px; /* Ajustado */
+          margin: 0;
+          line-height: 1;
+        }
+        #header #logo h1 a { color: var(--color-primary-blue); }
+        #header #logo p.subtitle {
+            font-size: 12px; /* Ajustado */
+            line-height: 1;
+            color: var(--color-text-light);
+            margin-top: 4px;
+            margin-bottom: 0;
+        }
+
+        /* Navigation Menu */
+        #nav-menu-container {
+          /* float: right; ya no es necesario con flexbox */
+        }
+        .nav-menu, .nav-menu * { list-style: none; margin: 0; padding: 0; }
+        .nav-menu > ul > li { float: left; } /* Para alinear los items del menú */
+        .nav-menu a {
+          padding: 8px 12px; /* Ajustado */
+          text-decoration: none;
+          display: inline-block;
+          color: var(--color-primary-blue);
+          font-family: "Montserrat", sans-serif;
+          font-weight: 600; /* Un poco menos bold */
+          font-size: 14px;
+        }
+        .nav-menu li:hover > a, .nav-menu .menu-active > a {
+          color: var(--color-secondary-red);
+        }
+
+        /* Mobile Nav Toggle */
+        #mobile-nav-toggle { display: none; } /* Se manejará con JS y media queries */
+
+        /*--------------------------------------------------------------
+        # Hero Section
+        --------------------------------------------------------------*/
+        #hero {
+          width: 100%;
+          height: 100vh; /* Ocupa toda la altura de la ventana */
+          /* NO HAY padding-top aquí, el header está fijo y el contenido del hero se alinea */
+          background: url('images/hero_background.jpg') no-repeat center center;
+          background-size: cover;
+          position: relative; /* Para el ::before overlay */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+        #hero::before {
+          content: "";
+          background: rgba(0, 16, 46, 0.65); /* Azul muy oscuro semi-transparente */
+          position: absolute;
+          inset: 0; /* shorthand para top, right, bottom, left = 0 */
+          z-index: 1;
+        }
+        .hero-container {
+          position: relative;
+          z-index: 2; /* Por encima del overlay */
+          padding: 0 15px;
+        }
+        #hero h2 {
+          margin-bottom: 15px;
+          font-size: 42px; /* Ajustado */
+          line-height: 1.2;
+          color: var(--color-white);
+          text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        #hero p {
+          color: #eee;
+          margin-bottom: 30px;
+          font-size: 18px; /* Ajustado */
+          text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+        }
+        /* Botón "Volver Arriba" */
+        .back-to-top {
+            position: fixed; display: none; background: var(--color-primary-blue); color: var(--color-white);
+            width: 40px; height: 40px; text-align: center; border-radius: 50%;
+            right: 15px; bottom: 15px; transition: background 0.3s; z-index: 999;
+            line-height: 40px; /* Para centrar el icono verticalmente */
+        }
+        .back-to-top i { font-size: 18px; }
+        .back-to-top:hover { background: var(--color-secondary-red); }
+
+
+        /*--------------------------------------------------------------
+        # Main Content Sections
+        --------------------------------------------------------------*/
+        main#main {
+            padding-top: var(--header-height); /* MUY IMPORTANTE: Para que el contenido no quede detrás del header fijo */
+        }
+        section {
+          overflow: hidden;
+          padding: 60px 0;
+        }
+        section:nth-child(odd) { background-color: var(--color-background-light); } /* Alternar colores */
+
+        /* About Section */
+        #about .about-container { display: flex; flex-wrap: wrap; align-items: center; }
+        #about .content { flex: 1 1 50%; padding-right: 20px; }
+        #about .background {
+            flex: 1 1 40%; min-height: 300px; background-size: cover;
+            background-position: center; border-radius: 8px;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+        }
+        #about .icon-box { display: flex; align-items: flex-start; margin-top: 25px; }
+        #about .icon-box .icon {
+            background: #eef3f9; width: 50px; height: 50px; display: flex; justify-content: center;
+            align-items: center; border-radius: 50%; transition: 0.3s; border: 2px solid var(--color-primary-blue);
+            margin-right: 15px; flex-shrink: 0;
+        }
+        #about .icon-box .icon i { color: var(--color-primary-blue); font-size: 24px; }
+        #about .icon-box:hover .icon { background: var(--color-primary-blue); border-color: var(--color-white); }
+        #about .icon-box:hover .icon i { color: var(--color-white); }
+        #about .icon-box .title { font-weight: 600; margin-bottom: 5px; font-size: 1.1em; }
+        #about .icon-box .title a { color: #283d50; }
+        #about .icon-box .title a:hover { color: var(--color-secondary-red); }
+        #about .icon-box .description { line-height: 1.5; font-size: 0.9em; margin-bottom: 0;}
+
+        /* Proposals Section */
+        #proposals .row { display: flex; flex-wrap: wrap; margin: 0 -15px; /* Para el gap */ }
+        #proposals .col-proposal {
+            width: 33.333%; padding: 0 15px; margin-bottom: 30px;
+            display: flex; /* Para que .box ocupe toda la altura */
+        }
+        #proposals .box {
+          padding: 25px; background: var(--color-white); box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+          border-radius: 8px; text-align: center; transition: all 0.3s; width: 100%;
+        }
+        #proposals .box:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
+        #proposals .icon {
+            margin: 0 auto 20px auto; width: 60px; height: 60px; background: var(--color-primary-blue);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        #proposals .icon .proposal-icon { width: 32px; height: 32px; filter: brightness(0) invert(1); }
+        #proposals .title { font-size: 1.2em; margin-bottom: 10px; }
+        #proposals .title a { color: var(--color-text-dark); }
+        #proposals .box:hover .title a { color: var(--color-secondary-red); }
+        #proposals .description { font-size: 0.9em; line-height: 1.6; color:var(--color-text-light); margin-bottom:0; }
+
+        /* Projects (Portfolio) Section */
+        #projects .portfolio-container { display: flex; flex-wrap: wrap; margin: 0 -15px; }
+        #projects .portfolio-item {
+            width: 33.333%; padding: 0 15px; margin-bottom: 30px;
+            border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        #projects .portfolio-item img.img-fluid {
+            width: 100%; height: 220px; object-fit: cover; display: block; transition: transform 0.3s;
+        }
+        #projects .portfolio-item:hover img.img-fluid { transform: scale(1.05); }
+        #projects .portfolio-info { padding: 15px; background: var(--color-white); }
+        #projects .portfolio-info h4 { font-size: 1.1em; margin-bottom: 5px; }
+        #projects .portfolio-info p { font-size: 0.85em; color: var(--color-text-light); margin-bottom: 10px; }
+        #projects .portfolio-info .preview-link {
+            float: right; font-size: 20px; width: 30px; height: 30px; background: var(--color-primary-blue);
+            color: var(--color-white); display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; transition: background 0.3s;
+        }
+        #projects .portfolio-info .preview-link:hover { background: var(--color-secondary-red); }
+
+        /* Team Section */
+        #team .row { display: flex; flex-wrap: wrap; margin: 0 -15px; }
+        #team .col-team { width: 33.333%; padding: 0 15px; margin-bottom: 30px; display: flex; }
+        #team .member {
+            text-align: center; background: var(--color-white); border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08); width: 100%; overflow: hidden;
+        }
+        #team .member img.img-fluid { width: 100%; height: 280px; object-fit: cover; }
+        #team .member .member-info { padding: 15px; }
+        #team .member h4 { font-size: 1.15em; margin-bottom: 3px; }
+        #team .member span { font-style: italic; display: block; font-size: 0.85em; color: var(--color-text-light); margin-bottom: 8px; }
+        #team .member .social a { color: var(--color-primary-blue); margin: 0 5px; font-size: 1.1em; }
+        #team .member .social a:hover { color: var(--color-secondary-red); }
+
+        /* Contact Section */
+        #contact .contact-info-row { display: flex; flex-wrap: wrap; margin: 0 -15px 30px -15px; }
+        #contact .contact-info-item { width: 33.333%; padding: 0 15px; text-align: center; margin-bottom: 20px; }
+        #contact .contact-info-item i { font-size: 28px; color: var(--color-primary-blue); margin-bottom: 8px; }
+        #contact .contact-info-item h3 { font-size: 1.2em; margin-bottom: 5px; }
+        #contact .contact-info-item address, #contact .contact-info-item p { color: var(--color-text-light); font-size: 0.9em; margin-bottom:0; }
+        #contact .form { max-width: 700px; margin: 0 auto; }
+        #contact .php-email-form .form-row { display: flex; flex-wrap: wrap; margin: 0 -10px; }
+        #contact .php-email-form .form-group { padding: 0 10px; margin-bottom: 15px; }
+        #contact .php-email-form .col-md-6 { width: 50%; }
+        #contact .php-email-form input, #contact .php-email-form textarea {
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9em;
+        }
+        #contact .php-email-form input:focus, #contact .php-email-form textarea:focus {
+            border-color: var(--color-primary-blue); box-shadow: 0 0 0 0.2rem rgba(0,40,104,0.25);
+        }
+        #contact .php-email-form textarea { min-height: 120px; }
+        #contact .php-email-form .text-center { text-align: center; margin-top: 15px; }
+        #contact .php-email-form button[type="submit"] {
+          background: var(--color-primary-blue); border: 0; padding: 10px 28px; color: var(--color-white);
+          transition: 0.3s; border-radius: 50px; cursor: pointer; font-weight: 600;
+        }
+        #contact .php-email-form button[type="submit"]:hover { background: var(--color-secondary-red); }
+
+        /* Footer */
+        #footer {
+          background: #001842; padding: 25px 0; color: #eee; font-size: 0.9em; text-align: center;
+        }
+        #footer .copyright { margin-bottom: 5px; }
+        #footer .credits { font-size: 0.8em; color: #aaa; }
+        #footer .credits i { font-size: 0.9em; }
+
+        /*--------------------------------------------------------------
+        # Responsive Media Queries
+        --------------------------------------------------------------*/
+        @media (max-width: 991px) { /* Tablets */
+            :root { --header-height: 70px; }
+            #header #logo h1 { font-size: 24px; }
+            #header #logo p.subtitle { font-size: 11px; }
+            .nav-menu a { font-size: 13px; padding: 8px 10px; }
+
+            .section-header p { width: 80%; }
+            #hero h2 { font-size: 36px; }
+            #hero p { font-size: 17px; }
+
+            #proposals .col-proposal,
+            #projects .portfolio-item,
+            #team .col-team,
+            #contact .contact-info-item {
+                width: 50%;
+            }
+            #contact .php-email-form .col-md-6 { width: 50%; } /* Mantener 2 columnas en tablet */
+        }
+
+        @media (max-width: 767px) { /* Móviles */
+            :root { --header-height: 65px; }
+            #header .container { justify-content: center; /* Centrar logo en móvil si no hay menú */ }
+            #header #logo { text-align: center; }
+            #header #logo h1 { font-size: 22px; }
+            #header #logo p.subtitle { display: none; /* Ocultar subtítulo en móviles pequeños */ }
+
+            #nav-menu-container { display: none; } /* Ocultar menú de escritorio */
+            #mobile-nav-toggle {
+                display: block; /* Mostrar botón hamburguesa */
+                position: fixed; /* O absolute relativo al header si se prefiere */
+                top: calc((var(--header-height) - 30px) / 2); /* Centrado verticalmente en el header */
+                right: 15px;
+                font-size: 24px;
+                color: var(--color-primary-blue);
+                background: none; border: none; cursor: pointer; z-index: 999;
+            }
+
+            .section-header h3 { font-size: 26px; }
+            .section-header p { width: 95%; }
+            #hero h2 { font-size: 28px; }
+            #hero p { font-size: 16px; }
+
+            #about .content { padding-right: 0; order: 2; }
+            #about .background { order: 1; margin-bottom: 20px; flex-basis: 100%;}
+
+            #proposals .col-proposal,
+            #projects .portfolio-item,
+            #team .col-team,
+            #contact .contact-info-item,
+            #contact .php-email-form .col-md-6 {
+                width: 100%; /* Una columna en móviles */
+            }
+            #contact .php-email-form .form-row { margin: 0; }
+            #contact .php-email-form .form-group { padding: 0 0 15px 0; }
+
+
+            /* Estilos básicos para el menú móvil (se activan con JS) */
+            #mobile-nav {
+                position: fixed; top: 0; right: -280px; width: 260px; height: 100vh;
+                background: rgba(0, 24, 72, 0.97); /* Azul oscuro con más opacidad */
+                padding-top: var(--header-height);
+                transition: 0.4s ease-in-out; z-index: 998; overflow-y: auto;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+            }
+            #mobile-nav ul { padding: 10px 0; }
+            #mobile-nav ul li { float: none; } /* Asegurar que no floten */
+            #mobile-nav ul li a {
+                display: block; padding: 12px 20px; color: var(--color-white);
+                font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+            }
+            #mobile-nav ul li a:hover, #mobile-nav .menu-active > a {
+                color: var(--color-secondary-red); background-color: rgba(255,255,255,0.05);
+            }
+            body.mobile-nav-active #mobile-nav { right: 0; }
+            body.mobile-nav-active #mobile-nav-toggle i::before { content: "\\f00d"; } /* Cambia a icono X */
+        }
+
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="container">
+            <div id="logo">
+                <h1><a href="index.html">[RAMIREZ] <span class="text-red">2025</span></a></h1>
+                <p class="subtitle">Por una ciudad próspera y justa para todos</p>
+            </div>
+           r <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                    <li class="menu-active"><a href="#hero">Inicio</a></li>
+                    <li><a href="#about">Mi Visión</a></li>
+                    <li><a href="#proposals">Propuestas</a></li>
+                    <li><a href="#projects">Proyectos</a></li>
+                    <li><a hef="#team">Equipo</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+            </nav>
+            <button type="button" id="mobile-nav-toggle"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="hero-container">
+            <h2>¡LIDERAZGO PARA EL CAMBIO!</h2> <p>Comprometido con la comunidad, la innovación y el futuro de nuestra ciudad.</p>
+            <a href="#proposals" class="btn-get-started">Descubre Mis Propuestas</a>
+        </div>
+    </section>
+
+    <main id="main">
+
+        <section id="about">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Mi Visión para la ciudad</h3>
+                    <p>Un mensaje personal sobre mis motivaciones y lo que aspiro a lograr como presidente.</p>
+                </div>
+                <div class="about-container">
+                    <div class="content order-lg-1 order-2">
+                        <p>
+                            Durante años, he sido un miembro activo de esta comunidad, observando, participando y entendiendo las necesidades
+                            que tenemos. Mi objetivo es transformar nuestro servidor en un referente de jugabilidad, equidad y diversión.
+                            Creo firmemente en [Menciona 2-3 valores clave: ej. la transparencia, la escucha activa, el desarrollo constante].
+                        </p>
+                        <div class="icon-box">
+                            <div class="icon"><i class="fas fa-bullseye"></i></div>
+                            <div>
+                                <h4 class="title"><a href="">Innovación Continua</a></h4>
+                                <p class="description">Implementar nuevas mecánicas y sistemas que mantengan el servidor fresco y emocionante.</p>
+                            </div>
+                        </div>
+                        <div class="icon-box">
+                            <div class="icon"><i class="fas fa-users"></i></div>
+                            <div>
+                                <h4 class="title"><a href="">Comunidad Primero</a></h4>
+                                <p class="description">Fomentar un ambiente donde cada jugador se sienta escuchado y valorado.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="background order-lg-2 order-1" style="background-image: url('utils/tulio.png');">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="proposals">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Mis Propuestas Clave</h3>
+                    <p>Pilares fundamentales de mi plan de gobierno para mejorar nuestro servidor SA-MP.</p>
+                </div>
+                <div class="row">
+                    <div class="col-proposal"> <div class="box">
+                            <div class="icon"><img src="utils/economia.png" alt="Icono Economía" class="proposal-icon"></div>
+                            <h4 class="title"><a href="">Economía Renovada</a></h4>
+                            <p class="description">Revisión y ajuste de salarios, precios y sistemas de trabajos para una economía más balanceada y dinámica.</p>
+                        </div>
+                    </div>
+                    <div class="col-proposal">
+                        <div class="box">
+                            <div class="icon"><img src="utils/seguridad.png" alt="Icono Seguridad" class="proposal-icon"></div>
+                            <h4 class="title"><a href="">Seguridad y Justicia</a></h4>
+                            <p class="description">Fortalecimiento de las facciones legales, revisión de normativas y un sistema de administración más transparente.</p>
+                        </div>
+                    </div>
+                    <div class="col-proposal">
+                        <div class="box">
+                            <div class="icon"><img src="utils/eventos.png" alt="Icono Eventos" class="proposal-icon"></div>
+                            <h4 class="title"><a href="">Eventos y Rol Comunitario</a></h4>
+                            <p class="description">Creación de un calendario de eventos semanales, incentivos para el rol creativo y apoyo a iniciativas comunitarias.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Proyectos Destacados</h3>
+                    <p>Visualiza algunas de las mejoras e implementaciones que tengo planeadas para el servidor.</p>
+                </div>
+                <div class="portfolio-container">
+                    <div class="portfolio-item">
+                        <img src="utils/centrocivico.jpeg" class="img-fluid" alt="Proyecto Nuevo Ayuntamiento">
+                        <div class="portfolio-info">
+                            <h4>Nuevo Ayuntamiento</h4>
+                            <p>Rediseño para eventos y atención ciudadana.</p>
+                            <a href="utils/centrocivico.jpeg" data-gall="portfolioGallery" class="venobox preview-link" title="Nuevo Ayuntamiento"><i class="fas fa-plus"></i></a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="utils/centrocivicoo.jpg" class="img-fluid" alt="Nuevo centro civico">
+                        <div class="portfolio-info">
+                            <h4>Centro civico publico</h4>
+                            <p>Para fortalezer la comunidad.</p>
+                            <a href="utils/centrocivicoo.jpg" data-gall="portfolioGallery" class="venobox preview-link" title="centro civico"><i class="fas fa-plus"></i></a>
+                        </div>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="utils/estadio.jpeg" class="img-fluid" alt="Zona de Eventos Deportivos">
+                        <div class="portfolio-info">
+                            <h4>Nueva Zona de Eventos</h4>
+                            <p>Estadio para eventos y competiciones.</p>
+                            <a href="utils/estadio.jpeg" data-gall="portfolioGallery" class="venobox preview-link" title="Zona de Eventos"><i class="fas fa-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="team">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Mi Equipo de Confianza</h3>
+                    <p>Personas dedicadas que me acompañarán para hacer realidad esta visión (si aplica).</p>
+                </div>
+                <div class="row">
+                    <div class="col-team">
+                        <div class="member">
+                            <img src="utils/russell.png" class="img-fluid" alt="Miembro 1">
+                            <div class="member-info">
+                                <h4>[Russell Tenpenny]</h4>
+                                <span>Secretario de Defensa.</span>
+                                <div class="social">
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-team">
+                        <div class="member">
+                            <img src="utils/walter.png" class="img-fluid" alt="Miembro 2">
+                            <div class="member-info">
+                                <h4>[Walter Guzman]</h4>
+                                <span>Vicepresidente.</span>
+                                <div class="social">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Únete y Participa</h3>
+                    <p>Tu apoyo es fundamental. Contáctame para compartir tus ideas, dudas o para unirte a esta campaña.</p>
+                </div>
+                <div class="contact-info-row">
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>En el Servidor</h3>
+                        <address>[Tu Nick en SA-MP]</address>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fab fa-discord"></i>
+                        <h3>Discord</h3>
+                        <p><a href="https://discord.gg/wKFsCZebmT">[Tu Usuario#0000]</a></p>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Foro / Mensajería</h3>
+                        <p><a href="https://discord.gg/wKFsCZebmT">[Tu Usuario en Foro]</a></p>
+                    </div>
+                </div>
+
+                <div class="form">
+                    <form action="ENLACE_A_PROCESADOR_FORMULARIO" method="post" role="form" class="php-email-form">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <input type="text" name="name" placeholder="Tu Nombre (En Juego)" required />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="text" name="discord_user" placeholder="Tu Usuario de Discord (Opcional)" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" rows="5" placeholder="Mensaje o Propuesta" required></textarea>
+                        </div>
+                        <div class="text-center"><button type="submit">Enviar Mensaje</button></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="container">
+            <div class="copyright">
+                &copy; Copyright <strong>Tulio Ramirez</strong>. Todos los derechos reservados.
+            </div>
+            <div class="credits">
+                Diseñado con <i class="fas fa-heart text-red"></i> para la comunidad de Gotham City
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    <nav id="mobile-nav"></nav> <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.getElementById('header');
+            const headerHeight = header ? header.offsetHeight : 0; // Obtener altura real del header
+
+            // Botón "Volver Arriba"
+            const backToTopButton = document.querySelector('.back-to-top');
+            if (backToTopButton) {
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 100) {
+                        backToTopButton.style.display = 'block';
+                    } else {
+                        backToTopButton.style.display = 'none';
+                    }
+                });
+                backToTopButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // Smooth scroll para los enlaces del menú
+            const navMenuLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+            navMenuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        let elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                        let offsetPosition = elementPosition - headerHeight;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                        // Cerrar menú móvil si está abierto
+                        if (document.body.classList.contains('mobile-nav-active')) {
+                            document.body.classList.remove('mobile-nav-active');
+                            const toggleIcon = document.querySelector('#mobile-nav-toggle i');
+                            if (toggleIcon) toggleIcon.className = 'fas fa-bars'; // Reset icon
+                        }
+                    }
+                });
+            });
+
+            // Menú móvil
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const mobileNavContainer = document.getElementById('mobile-nav'); // Contenedor vacío
+
+            if (mobileNavToggle && mobileNavContainer) {
+                const desktopNav = document.querySelector('#nav-menu-container ul.nav-menu');
+                if (desktopNav) {
+                    mobileNavContainer.innerHTML = '<ul>' + desktopNav.innerHTML + '</ul>'; // Clonar menú
+                }
+
+                mobileNavToggle.addEventListener('click', function() {
+                    document.body.classList.toggle('mobile-nav-active');
+                    const toggleIcon = this.querySelector('i');
+                    if (document.body.classList.contains('mobile-nav-active')) {
+                        toggleIcon.className = 'fas fa-times'; // Cambiar a icono X
+                    } else {
+                        toggleIcon.className = 'fas fa-bars'; // Cambiar a icono barras
+                    }
+                });
+
+                // Cerrar menú móvil al hacer clic en un enlace dentro de él
+                mobileNavContainer.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                         // El smooth scroll ya se maneja arriba, solo cerramos el menú
+                        if (document.body.classList.contains('mobile-nav-active')) {
+                            document.body.classList.remove('mobile-nav-active');
+                            const toggleIcon = document.querySelector('#mobile-nav-toggle i');
+                            if (toggleIcon) toggleIcon.className = 'fas fa-bars';
+                        }
+                    });
+                });
+            }
+
+            // Activar link del menú según la sección visible al hacer scroll (opcional, más avanzado)
+            // Esta es una implementación simple, puede necesitar ajustes
+            const sections = document.querySelectorAll('section[id]');
+            window.addEventListener('scroll', navHighlighter);
+
+            function navHighlighter() {
+                let scrollY = window.pageYOffset;
+                sections.forEach(current => {
+                    const sectionHeight = current.offsetHeight;
+                    const sectionTop = current.getBoundingClientRect().top + window.pageYOffset - headerHeight - 50; // 50px offset
+                    let sectionId = current.getAttribute('id');
+
+                    if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                        document.querySelectorAll('.nav-menu a[href*=' + sectionId + ']').forEach(link => {
+                           link.parentElement.classList.add('menu-active');
+                        });
+                        document.querySelectorAll('#mobile-nav a[href*=' + sectionId + ']').forEach(link => {
+                           link.parentElement.classList.add('menu-active');
+                        });
+                    } else {
+                         document.querySelectorAll('.nav-menu a[href*=' + sectionId + ']').forEach(link => {
+                           link.parentElement.classList.remove('menu-active');
+                        });
+                        document.querySelectorAll('#mobile-nav a[href*=' + sectionId + ']').forEach(link => {
+                           link.parentElement.classList.remove('menu-active');
+                        });
+                    }
+                });
+                 // Activar el primer enlace si estamos muy arriba
+                if (scrollY < sections[0].getBoundingClientRect().top + window.pageYOffset - headerHeight - 50) {
+                    document.querySelectorAll('.nav-menu li, #mobile-nav li').forEach(li => li.classList.remove('menu-active'));
+                    const firstLinkDesktop = document.querySelector('.nav-menu a[href="#hero"]');
+                    if(firstLinkDesktop) firstLinkDesktop.parentElement.classList.add('menu-active');
+                    const firstLinkMobile = document.querySelector('#mobile-nav a[href="#hero"]');
+                    if(firstLinkMobile) firstLinkMobile.parentElement.classList.add('menu-active');
+                }
+            }
+            navHighlighter(); // Llamar una vez al cargar
+
+        });
+    </script>
+
+</body>
+</html>
