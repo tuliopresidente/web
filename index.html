@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tulio - Elecciones Presidenciales SA-MP</title>
+    <title>Tulio Ramirez - Elecciones Presidenciales SA-MP</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUA6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         /*--------------------------------------------------------------
@@ -18,7 +18,8 @@
             --color-text-dark: #333333;
             --color-text-light: #555555;
             --color-background-light: #f7f7f7;
-            --header-height: 75px; /* Altura estimada del header, ajustar si es necesario */
+            --header-height: 75px;
+            --transition-speed: 0.3s;
         }
 
         * {
@@ -36,11 +37,12 @@
 
         a {
           color: var(--color-secondary-red);
-          transition: 0.3s;
+          transition: var(--transition-speed);
           text-decoration: none;
         }
         a:hover {
           color: #D62828;
+          text-decoration: underline;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -73,17 +75,20 @@
           font-size: 16px;
           letter-spacing: 1px;
           display: inline-block;
-          padding: 10px 32px;
+          padding: 12px 35px; /* Aumentado padding */
           border-radius: 50px;
-          transition: 0.5s;
+          transition: var(--transition-speed);
           color: var(--color-white);
           background: var(--color-secondary-red);
           border: 2px solid var(--color-secondary-red);
+          box-shadow: 0 4px 10px rgba(191, 10, 48, 0.3); /* Sombra sutil */
         }
         .btn-get-started:hover {
-          background: transparent;
-          border-color: var(--color-white); /* Para la sección hero */
+          background: var(--color-primary-blue); /* Cambio de color en hover */
+          border-color: var(--color-primary-blue);
           color: var(--color-white);
+          transform: translateY(-2px); /* Efecto de elevación */
+          box-shadow: 0 6px 15px rgba(0, 40, 104, 0.4);
         }
 
         /* Sections Header */
@@ -92,22 +97,24 @@
             padding-bottom: 40px;
         }
         .section-header h3 {
-          font-size: 32px; /* Ajustado */
+          font-size: 32px;
           margin-bottom: 10px;
+          position: relative;
         }
         .section-header h3::after {
             content: '';
             display: block;
-            width: 50px;
-            height: 3px;
+            width: 60px; /* Más largo */
+            height: 4px; /* Más grueso */
             background: var(--color-secondary-red);
-            margin: 8px auto 0;
+            margin: 10px auto 0;
+            border-radius: 2px;
         }
         .section-header p {
           color: var(--color-text-light);
-          width: 60%;
+          width: 70%; /* Un poco más ancho */
           margin: 0 auto;
-          max-width: 700px;
+          max-width: 750px;
         }
 
         /*--------------------------------------------------------------
@@ -119,69 +126,91 @@
           left: 0;
           top: 0;
           right: 0;
-          transition: all 0.3s;
+          transition: all var(--transition-speed);
           z-index: 997;
-          background-color: var(--color-white);
+          background-color: rgba(255, 255, 255, 0.95); /* Blanco semi-transparente */
+          backdrop-filter: blur(5px); /* Efecto blur para navegadores compatibles */
           box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
-          display: flex; /* Usar flexbox para alinear items */
-          align-items: center; /* Centrar verticalmente los items */
+          display: flex;
+          align-items: center;
         }
-        #header .container { /* El container del header también usará flex */
+        #header.header-scrolled { /* Estilo para header cuando se hace scroll */
+            background-color: var(--color-white);
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        #header .container {
             display: flex;
-            justify-content: space-between; /* Logo a la izq, menú a la der */
+            justify-content: space-between;
             align-items: center;
-            width: 100%; /* Para que el space-between funcione bien */
+            width: 100%;
         }
 
-        #header #logo {
-          /* float: left; ya no es necesario con flexbox */
-        }
         #header #logo h1 {
-          font-size: 26px; /* Ajustado */
+          font-size: 26px;
           margin: 0;
           line-height: 1;
+          font-weight: 700; /* Más énfasis */
         }
         #header #logo h1 a { color: var(--color-primary-blue); }
+        #header #logo h1 a:hover { text-decoration: none; }
         #header #logo p.subtitle {
-            font-size: 12px; /* Ajustado */
+            font-size: 12px;
             line-height: 1;
             color: var(--color-text-light);
             margin-top: 4px;
             margin-bottom: 0;
+            font-style: italic;
         }
 
         /* Navigation Menu */
-        #nav-menu-container {
-          /* float: right; ya no es necesario con flexbox */
-        }
+        #nav-menu-container {}
         .nav-menu, .nav-menu * { list-style: none; margin: 0; padding: 0; }
-        .nav-menu > ul > li { float: left; } /* Para alinear los items del menú */
+        .nav-menu > ul > li { float: left; position: relative; }
         .nav-menu a {
-          padding: 8px 12px; /* Ajustado */
+          padding: 10px 15px; /* Más padding */
           text-decoration: none;
           display: inline-block;
           color: var(--color-primary-blue);
           font-family: "Montserrat", sans-serif;
-          font-weight: 600; /* Un poco menos bold */
+          font-weight: 600;
           font-size: 14px;
+          text-transform: uppercase; /* Mayúsculas para un look más formal */
+          letter-spacing: 0.5px;
         }
         .nav-menu li:hover > a, .nav-menu .menu-active > a {
           color: var(--color-secondary-red);
         }
+        .nav-menu > ul > li > a::before { /* Efecto subrayado sutil en hover */
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--color-secondary-red);
+            visibility: hidden;
+            transform: scaleX(0);
+            transition: all 0.3s ease-in-out 0s;
+        }
+        .nav-menu > ul > li:hover > a::before,
+        .nav-menu > ul > li.menu-active > a::before {
+            visibility: visible;
+            transform: scaleX(0.7); /* Subrayado no ocupa todo el ancho */
+        }
+
 
         /* Mobile Nav Toggle */
-        #mobile-nav-toggle { display: none; } /* Se manejará con JS y media queries */
+        #mobile-nav-toggle { display: none; }
 
         /*--------------------------------------------------------------
         # Hero Section
         --------------------------------------------------------------*/
         #hero {
           width: 100%;
-          height: 100vh; /* Ocupa toda la altura de la ventana */
-          /* NO HAY padding-top aquí, el header está fijo y el contenido del hero se alinea */
-          background: url('images/hero_background.jpg') no-repeat center center;
+          height: 100vh;
+          background: url('https://via.placeholder.com/1920x1080/002868/FFFFFF?text=Imagen+Hero+Campaña') no-repeat center center; /* Placeholder Image */
           background-size: cover;
-          position: relative; /* Para el ::before overlay */
+          position: relative;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -189,37 +218,47 @@
         }
         #hero::before {
           content: "";
-          background: rgba(0, 16, 46, 0.65); /* Azul muy oscuro semi-transparente */
+          background: rgba(0, 16, 46, 0.7); /* Overlay más oscuro */
           position: absolute;
-          inset: 0; /* shorthand para top, right, bottom, left = 0 */
+          inset: 0;
           z-index: 1;
         }
         .hero-container {
           position: relative;
-          z-index: 2; /* Por encima del overlay */
+          z-index: 2;
           padding: 0 15px;
+          animation: fadeInHeroText 1.5s ease-out; /* Animación para el texto */
+        }
+        @keyframes fadeInHeroText {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         #hero h2 {
-          margin-bottom: 15px;
-          font-size: 42px; /* Ajustado */
+          margin-bottom: 20px; /* Más espacio */
+          font-size: 48px; /* Más grande */
           line-height: 1.2;
           color: var(--color-white);
-          text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+          text-shadow: 2px 2px 5px rgba(0,0,0,0.6); /* Sombra más pronunciada */
+          font-weight: 700;
         }
         #hero p {
-          color: #eee;
-          margin-bottom: 30px;
-          font-size: 18px; /* Ajustado */
-          text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+          color: #f0f0f0; /* Ligeramente más claro */
+          margin-bottom: 35px;
+          font-size: 20px; /* Más grande */
+          text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+          font-weight: 400; /* Normal weight */
         }
         /* Botón "Volver Arriba" */
         .back-to-top {
             position: fixed; display: none; background: var(--color-primary-blue); color: var(--color-white);
-            width: 40px; height: 40px; text-align: center; border-radius: 50%;
-            right: 15px; bottom: 15px; transition: background 0.3s; z-index: 999;
-            line-height: 40px; /* Para centrar el icono verticalmente */
+            width: 44px; height: 44px; text-align: center; border-radius: 50%;
+            right: 15px; bottom: 15px; transition: background var(--transition-speed), opacity var(--transition-speed), visibility var(--transition-speed);
+            z-index: 999; line-height: 44px; opacity: 0; visibility: hidden;
         }
-        .back-to-top i { font-size: 18px; }
+        .back-to-top.active { /* Clase para mostrar el botón */
+            opacity: 1; visibility: visible;
+        }
+        .back-to-top i { font-size: 20px; }
         .back-to-top:hover { background: var(--color-secondary-red); }
 
 
@@ -227,121 +266,241 @@
         # Main Content Sections
         --------------------------------------------------------------*/
         main#main {
-            padding-top: var(--header-height); /* MUY IMPORTANTE: Para que el contenido no quede detrás del header fijo */
+            padding-top: var(--header-height);
         }
         section {
           overflow: hidden;
-          padding: 60px 0;
+          padding: 70px 0; /* Más padding */
         }
-        section:nth-child(odd) { background-color: var(--color-background-light); } /* Alternar colores */
+        section:nth-child(even) { background-color: var(--color-background-light); }
+
+        /* Efecto Fade-in para secciones */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
 
         /* About Section */
-        #about .about-container { display: flex; flex-wrap: wrap; align-items: center; }
-        #about .content { flex: 1 1 50%; padding-right: 20px; }
+        #about .about-container { display: flex; flex-wrap: wrap; align-items: center; gap: 30px; }
+        #about .content { flex: 1 1 55%; }
+        #about .candidate-image-area {
+            flex: 1 1 40%;
+            text-align: center;
+        }
         #about .background {
-            flex: 1 1 40%; min-height: 300px; background-size: cover;
-            background-position: center; border-radius: 8px;
-            box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+            width: 100%; max-width: 350px; height: 350px; background-size: cover;
+            background-position: center; border-radius: 12px; /* Más redondeado */
+            box-shadow: 0px 8px 25px rgba(0,0,0,0.15); /* Sombra más pronunciada */
+            margin: 0 auto 20px auto;
+            position: relative;
+            overflow: hidden; /* Para el botón de cambio */
         }
-        #about .icon-box { display: flex; align-items: flex-start; margin-top: 25px; }
+         #about .change-image-btn {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 15px;
+            background-color: rgba(0, 40, 104, 0.8);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        #about .background:hover .change-image-btn {
+            opacity: 1;
+        }
+        #about .icon-box { display: flex; align-items: flex-start; margin-top: 30px; }
         #about .icon-box .icon {
-            background: #eef3f9; width: 50px; height: 50px; display: flex; justify-content: center;
-            align-items: center; border-radius: 50%; transition: 0.3s; border: 2px solid var(--color-primary-blue);
-            margin-right: 15px; flex-shrink: 0;
+            background: var(--color-white); /* Fondo blanco para destacar borde */
+            width: 55px; height: 55px; display: flex; justify-content: center;
+            align-items: center; border-radius: 50%; transition: var(--transition-speed);
+            border: 2px solid var(--color-primary-blue);
+            margin-right: 20px; flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
         }
-        #about .icon-box .icon i { color: var(--color-primary-blue); font-size: 24px; }
-        #about .icon-box:hover .icon { background: var(--color-primary-blue); border-color: var(--color-white); }
-        #about .icon-box:hover .icon i { color: var(--color-white); }
-        #about .icon-box .title { font-weight: 600; margin-bottom: 5px; font-size: 1.1em; }
+        #about .icon-box .icon i { color: var(--color-primary-blue); font-size: 26px; transition: var(--transition-speed); }
+        #about .icon-box:hover .icon { background: var(--color-primary-blue); border-color: var(--color-primary-blue); }
+        #about .icon-box:hover .icon i { color: var(--color-white); transform: scale(1.1); } /* Efecto icono */
+        #about .icon-box .title { font-weight: 700; margin-bottom: 5px; font-size: 1.15em; }
         #about .icon-box .title a { color: #283d50; }
-        #about .icon-box .title a:hover { color: var(--color-secondary-red); }
-        #about .icon-box .description { line-height: 1.5; font-size: 0.9em; margin-bottom: 0;}
+        #about .icon-box .title a:hover { color: var(--color-secondary-red); text-decoration: none; }
+        #about .icon-box .description { line-height: 1.6; font-size: 0.95em; margin-bottom: 0; color: var(--color-text-light);}
 
         /* Proposals Section */
-        #proposals .row { display: flex; flex-wrap: wrap; margin: 0 -15px; /* Para el gap */ }
+        #proposals .row { display: flex; flex-wrap: wrap; margin: 0 -15px; justify-content: center; }
         #proposals .col-proposal {
             width: 33.333%; padding: 0 15px; margin-bottom: 30px;
-            display: flex; /* Para que .box ocupe toda la altura */
+            display: flex;
         }
         #proposals .box {
-          padding: 25px; background: var(--color-white); box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-          border-radius: 8px; text-align: center; transition: all 0.3s; width: 100%;
+          padding: 30px; background: var(--color-white); box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+          border-radius: 10px; text-align: center; transition: all var(--transition-speed) ease-in-out; width: 100%;
+          border-top: 4px solid transparent; /* Borde superior para efecto hover */
         }
-        #proposals .box:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
-        #proposals .icon {
-            margin: 0 auto 20px auto; width: 60px; height: 60px; background: var(--color-primary-blue);
+        #proposals .box:hover {
+            transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            border-top-color: var(--color-secondary-red);
+        }
+        #proposals .icon { /* Usando Font Awesome */
+            margin: 0 auto 25px auto; width: 70px; height: 70px; background: var(--color-primary-blue);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            transition: background-color var(--transition-speed);
         }
-        #proposals .icon .proposal-icon { width: 32px; height: 32px; filter: brightness(0) invert(1); }
-        #proposals .title { font-size: 1.2em; margin-bottom: 10px; }
-        #proposals .title a { color: var(--color-text-dark); }
-        #proposals .box:hover .title a { color: var(--color-secondary-red); }
-        #proposals .description { font-size: 0.9em; line-height: 1.6; color:var(--color-text-light); margin-bottom:0; }
+        #proposals .box:hover .icon {
+            background-color: var(--color-secondary-red);
+        }
+        #proposals .icon i { font-size: 32px; color: var(--color-white); }
+        #proposals .title { font-size: 1.25em; margin-bottom: 12px; font-weight: 700;}
+        #proposals .title a { color: var(--color-text-dark); transition: color var(--transition-speed); }
+        #proposals .box:hover .title a { color: var(--color-secondary-red); text-decoration: none; }
+        #proposals .description { font-size: 0.9em; line-height: 1.7; color:var(--color-text-light); margin-bottom:0; }
 
         /* Projects (Portfolio) Section */
         #projects .portfolio-container { display: flex; flex-wrap: wrap; margin: 0 -15px; }
         #projects .portfolio-item {
             width: 33.333%; padding: 0 15px; margin-bottom: 30px;
-            border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        #projects .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        #projects .portfolio-image-wrap {
+            position: relative; overflow: hidden;
         }
         #projects .portfolio-item img.img-fluid {
-            width: 100%; height: 220px; object-fit: cover; display: block; transition: transform 0.3s;
+            width: 100%; height: 240px; object-fit: cover; display: block; transition: transform 0.4s ease;
         }
-        #projects .portfolio-item:hover img.img-fluid { transform: scale(1.05); }
-        #projects .portfolio-info { padding: 15px; background: var(--color-white); }
-        #projects .portfolio-info h4 { font-size: 1.1em; margin-bottom: 5px; }
-        #projects .portfolio-info p { font-size: 0.85em; color: var(--color-text-light); margin-bottom: 10px; }
-        #projects .portfolio-info .preview-link {
-            float: right; font-size: 20px; width: 30px; height: 30px; background: var(--color-primary-blue);
+        #projects .portfolio-item:hover img.img-fluid { transform: scale(1.1); }
+        #projects .portfolio-info { padding: 20px; background: var(--color-white); }
+        #projects .portfolio-info h4 { font-size: 1.15em; margin-bottom: 8px; font-weight: 700; }
+        #projects .portfolio-info p { font-size: 0.9em; color: var(--color-text-light); margin-bottom: 15px; }
+        #projects .portfolio-info .details-link { /* Cambiado de preview-link */
+            display: inline-block; /* Para que flote bien */
+            font-size: 18px; width: 36px; height: 36px; background: var(--color-primary-blue);
             color: var(--color-white); display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; transition: background 0.3s;
+            border-radius: 50%; transition: background var(--transition-speed);
+            float: right; /* Mantenido */
         }
-        #projects .portfolio-info .preview-link:hover { background: var(--color-secondary-red); }
+        #projects .portfolio-info .details-link:hover { background: var(--color-secondary-red); text-decoration:none; }
+        #projects .portfolio-info .details-link i { line-height: 1; }
+
 
         /* Team Section */
-        #team .row { display: flex; flex-wrap: wrap; margin: 0 -15px; }
+        #team .row { display: flex; flex-wrap: wrap; margin: 0 -15px; justify-content: center; }
         #team .col-team { width: 33.333%; padding: 0 15px; margin-bottom: 30px; display: flex; }
         #team .member {
-            text-align: center; background: var(--color-white); border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08); width: 100%; overflow: hidden;
+            text-align: center; background: var(--color-white); border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); width: 100%; overflow: hidden;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
         }
-        #team .member img.img-fluid { width: 100%; height: 280px; object-fit: cover; }
-        #team .member .member-info { padding: 15px; }
-        #team .member h4 { font-size: 1.15em; margin-bottom: 3px; }
-        #team .member span { font-style: italic; display: block; font-size: 0.85em; color: var(--color-text-light); margin-bottom: 8px; }
-        #team .member .social a { color: var(--color-primary-blue); margin: 0 5px; font-size: 1.1em; }
+        #team .member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        #team .member img.img-fluid { width: 100%; height: 300px; object-fit: cover; object-position: top; }
+        #team .member .member-info { padding: 20px 15px; }
+        #team .member h4 { font-size: 1.2em; margin-bottom: 5px; font-weight: 700;}
+        #team .member span { font-style: italic; display: block; font-size: 0.9em; color: var(--color-text-light); margin-bottom: 10px; }
+        #team .member .social a { color: var(--color-primary-blue); margin: 0 7px; font-size: 1.2em; transition: color var(--transition-speed);}
         #team .member .social a:hover { color: var(--color-secondary-red); }
 
+        /* Testimonials Section (Nueva - Esqueleto) */
+        #testimonials { background-color: var(--color-background-light); }
+        #testimonials .testimonial-item {
+            background: var(--color-white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #testimonials .testimonial-item img.testimonial-img {
+            width: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            border: 4px solid var(--color-white);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #testimonials .testimonial-item h4 { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; }
+        #testimonials .testimonial-item .quote-icon-left,
+        #testimonials .testimonial-item .quote-icon-right {
+            color: var(--color-secondary-red);
+            font-size: 26px;
+        }
+        #testimonials .testimonial-item p {
+            font-style: italic;
+            margin: 0 15px 0 15px;
+            color: var(--color-text-light);
+        }
+        /* Podrías usar un slider/carousel aquí para múltiples testimonios */
+
+
         /* Contact Section */
-        #contact .contact-info-row { display: flex; flex-wrap: wrap; margin: 0 -15px 30px -15px; }
-        #contact .contact-info-item { width: 33.333%; padding: 0 15px; text-align: center; margin-bottom: 20px; }
-        #contact .contact-info-item i { font-size: 28px; color: var(--color-primary-blue); margin-bottom: 8px; }
-        #contact .contact-info-item h3 { font-size: 1.2em; margin-bottom: 5px; }
-        #contact .contact-info-item address, #contact .contact-info-item p { color: var(--color-text-light); font-size: 0.9em; margin-bottom:0; }
-        #contact .form { max-width: 700px; margin: 0 auto; }
+        #contact .contact-info-row { display: flex; flex-wrap: wrap; margin: 0 -15px 40px -15px; }
+        #contact .contact-info-item {
+            width: 33.333%; padding: 20px 15px; text-align: center; margin-bottom: 20px;
+            transition: transform var(--transition-speed);
+        }
+        #contact .contact-info-item:hover { transform: translateY(-5px); }
+        #contact .contact-info-item i {
+            font-size: 32px; color: var(--color-primary-blue); margin-bottom: 12px;
+            display: inline-block; padding:15px; background-color: #eef3f9; border-radius: 50%;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+        #contact .contact-info-item:hover i {
+            background-color: var(--color-primary-blue); color: var(--color-white);
+        }
+        #contact .contact-info-item h3 { font-size: 1.25em; margin-bottom: 8px; font-weight: 600;}
+        #contact .contact-info-item address, #contact .contact-info-item p { color: var(--color-text-light); font-size: 0.95em; margin-bottom:0; }
+        #contact .contact-info-item p a:hover { color: var(--color-primary-blue); }
+
+        #contact .form { max-width: 700px; margin: 0 auto; background: var(--color-white); padding:30px; border-radius:10px; box-shadow: 0 5px 25px rgba(0,0,0,0.08); }
         #contact .php-email-form .form-row { display: flex; flex-wrap: wrap; margin: 0 -10px; }
-        #contact .php-email-form .form-group { padding: 0 10px; margin-bottom: 15px; }
+        #contact .php-email-form .form-group { padding: 0 10px; margin-bottom: 20px; width:100%; } /* Default a full width */
         #contact .php-email-form .col-md-6 { width: 50%; }
         #contact .php-email-form input, #contact .php-email-form textarea {
-            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9em;
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 5px; font-size: 0.95em;
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
         }
         #contact .php-email-form input:focus, #contact .php-email-form textarea:focus {
             border-color: var(--color-primary-blue); box-shadow: 0 0 0 0.2rem rgba(0,40,104,0.25);
+            outline: none;
         }
-        #contact .php-email-form textarea { min-height: 120px; }
-        #contact .php-email-form .text-center { text-align: center; margin-top: 15px; }
+        #contact .php-email-form textarea { min-height: 130px; resize: vertical; }
+        #contact .php-email-form .text-center { text-align: center; margin-top: 20px; }
         #contact .php-email-form button[type="submit"] {
-          background: var(--color-primary-blue); border: 0; padding: 10px 28px; color: var(--color-white);
-          transition: 0.3s; border-radius: 50px; cursor: pointer; font-weight: 600;
+          background: var(--color-primary-blue); border: 0; padding: 12px 30px; color: var(--color-white);
+          transition: var(--transition-speed); border-radius: 50px; cursor: pointer; font-weight: 600; font-size:1em;
+          box-shadow: 0 4px 10px rgba(0, 40, 104, 0.2);
         }
-        #contact .php-email-form button[type="submit"]:hover { background: var(--color-secondary-red); }
+        #contact .php-email-form button[type="submit"]:hover {
+            background: var(--color-secondary-red);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(191, 10, 48, 0.3);
+        }
 
         /* Footer */
         #footer {
-          background: #001842; padding: 25px 0; color: #eee; font-size: 0.9em; text-align: center;
+          background: #001233; /* Un azul más oscuro */
+          padding: 30px 0; color: #ccc; /* Texto un poco más claro */
+          font-size: 0.9em; text-align: center;
         }
-        #footer .copyright { margin-bottom: 5px; }
-        #footer .credits { font-size: 0.8em; color: #aaa; }
+        #footer .copyright { margin-bottom: 8px; font-weight: 500;}
+        #footer .credits { font-size: 0.85em; color: #aaa; }
+        #footer .credits a { color: var(--color-secondary-red); }
+        #footer .credits a:hover { color: var(--color-white); }
         #footer .credits i { font-size: 0.9em; }
 
         /*--------------------------------------------------------------
@@ -350,12 +509,12 @@
         @media (max-width: 991px) { /* Tablets */
             :root { --header-height: 70px; }
             #header #logo h1 { font-size: 24px; }
-            #header #logo p.subtitle { font-size: 11px; }
             .nav-menu a { font-size: 13px; padding: 8px 10px; }
 
-            .section-header p { width: 80%; }
-            #hero h2 { font-size: 36px; }
-            #hero p { font-size: 17px; }
+            .section-header h3 {font-size: 28px;}
+            .section-header p { width: 85%; }
+            #hero h2 { font-size: 38px; }
+            #hero p { font-size: 18px; }
 
             #proposals .col-proposal,
             #projects .portfolio-item,
@@ -363,67 +522,79 @@
             #contact .contact-info-item {
                 width: 50%;
             }
-            #contact .php-email-form .col-md-6 { width: 50%; } /* Mantener 2 columnas en tablet */
+             #about .content { order: 2; text-align:center; }
+             #about .candidate-image-area { order: 1; margin-bottom: 30px; }
+             #about .background { margin: 0 auto 20px auto; }
         }
 
         @media (max-width: 767px) { /* Móviles */
             :root { --header-height: 65px; }
-            #header .container { justify-content: center; /* Centrar logo en móvil si no hay menú */ }
-            #header #logo { text-align: center; }
+            #header .container { justify-content: space-between; /* Mantener espacio para el toggle */}
+            #header #logo { text-align: left; }
             #header #logo h1 { font-size: 22px; }
-            #header #logo p.subtitle { display: none; /* Ocultar subtítulo en móviles pequeños */ }
+            #header #logo p.subtitle { font-size: 10px; }
 
-            #nav-menu-container { display: none; } /* Ocultar menú de escritorio */
+            #nav-menu-container { display: none; }
             #mobile-nav-toggle {
-                display: block; /* Mostrar botón hamburguesa */
-                position: fixed; /* O absolute relativo al header si se prefiere */
-                top: calc((var(--header-height) - 30px) / 2); /* Centrado verticalmente en el header */
-                right: 15px;
+                display: block;
+                position: relative; /* No fixed, para que esté en el flujo del header */
                 font-size: 24px;
                 color: var(--color-primary-blue);
                 background: none; border: none; cursor: pointer; z-index: 999;
+                padding: 5px; /* Area de toque */
             }
 
-            .section-header h3 { font-size: 26px; }
+            .section-header h3 { font-size: 24px; }
             .section-header p { width: 95%; }
-            #hero h2 { font-size: 28px; }
-            #hero p { font-size: 16px; }
+            #hero h2 { font-size: 30px; }
+            #hero p { font-size: 17px; }
+            .btn-get-started { padding: 10px 28px; font-size: 15px;}
 
-            #about .content { padding-right: 0; order: 2; }
-            #about .background { order: 1; margin-bottom: 20px; flex-basis: 100%;}
+
+            #about .content, #about .candidate-image-area { flex-basis: 100%; }
+
 
             #proposals .col-proposal,
             #projects .portfolio-item,
             #team .col-team,
             #contact .contact-info-item,
             #contact .php-email-form .col-md-6 {
-                width: 100%; /* Una columna en móviles */
+                width: 100%;
             }
             #contact .php-email-form .form-row { margin: 0; }
             #contact .php-email-form .form-group { padding: 0 0 15px 0; }
+            #contact .form { padding: 20px; }
 
 
-            /* Estilos básicos para el menú móvil (se activan con JS) */
             #mobile-nav {
                 position: fixed; top: 0; right: -280px; width: 260px; height: 100vh;
-                background: rgba(0, 24, 72, 0.97); /* Azul oscuro con más opacidad */
-                padding-top: var(--header-height);
+                background: rgba(0, 20, 60, 0.98); /* Un poco más opaco */
+                padding-top: 20px; /* Espacio desde arriba */
                 transition: 0.4s ease-in-out; z-index: 998; overflow-y: auto;
                 box-shadow: -5px 0 15px rgba(0,0,0,0.2);
             }
             #mobile-nav ul { padding: 10px 0; }
-            #mobile-nav ul li { float: none; } /* Asegurar que no floten */
+            #mobile-nav ul li { float: none; }
             #mobile-nav ul li a {
-                display: block; padding: 12px 20px; color: var(--color-white);
+                display: block; padding: 12px 25px; color: var(--color-white);
                 font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
             }
+             #mobile-nav ul li:last-child a { border-bottom: none; }
             #mobile-nav ul li a:hover, #mobile-nav .menu-active > a {
                 color: var(--color-secondary-red); background-color: rgba(255,255,255,0.05);
             }
             body.mobile-nav-active #mobile-nav { right: 0; }
-            body.mobile-nav-active #mobile-nav-toggle i::before { content: "\\f00d"; } /* Cambia a icono X */
-        }
+            body.mobile-nav-active #mobile-nav-toggle i {
+                /* Para el icono X, puedes usar ::before y ::after para dos líneas rotadas, o cambiar el icono */
+                /* Esta es una forma simple de cambiar el contenido del icono de Font Awesome */
+            }
+             /* Icono X para el toggle (Asegúrate que Font Awesome esté cargado) */
+            #mobile-nav-toggle .fa-times { display: none; }
+            body.mobile-nav-active #mobile-nav-toggle .fa-bars { display: none; }
+            body.mobile-nav-active #mobile-nav-toggle .fa-times { display: inline-block; }
 
+        }
     </style>
 </head>
 <body>
@@ -434,87 +605,103 @@
                 <h1><a href="index.html">[RAMIREZ] <span class="text-red">2025</span></a></h1>
                 <p class="subtitle">Por una ciudad próspera y justa para todos</p>
             </div>
-           r <nav id="nav-menu-container">
+            <nav id="nav-menu-container">
                 <ul class="nav-menu">
                     <li class="menu-active"><a href="#hero">Inicio</a></li>
                     <li><a href="#about">Mi Visión</a></li>
                     <li><a href="#proposals">Propuestas</a></li>
                     <li><a href="#projects">Proyectos</a></li>
-                    <li><a hef="#team">Equipo</a></li>
+                    <li><a href="#team">Equipo</a></li>
                     <li><a href="#contact">Contacto</a></li>
                 </ul>
             </nav>
-            <button type="button" id="mobile-nav-toggle"><i class="fas fa-bars"></i></button>
+            <button type="button" id="mobile-nav-toggle">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-times"></i> </button>
         </div>
     </header>
 
     <section id="hero">
         <div class="hero-container">
-            <h2>¡LIDERAZGO PARA EL CAMBIO!</h2> <p>Comprometido con la comunidad, la innovación y el futuro de nuestra ciudad.</p>
+            <h2>¡LIDERAZGO PARA EL <span class="text-red">CAMBIO</span>!</h2>
+            <p>Comprometido con la comunidad, la innovación y el futuro de nuestra ciudad.</p>
             <a href="#proposals" class="btn-get-started">Descubre Mis Propuestas</a>
         </div>
     </section>
 
     <main id="main">
 
-        <section id="about">
+        <section id="about" class="fade-in-section">
             <div class="container">
                 <div class="section-header">
-                    <h3>Mi Visión para la ciudad</h3>
+                    <h3>Mi Visión para la Ciudad</h3>
                     <p>Un mensaje personal sobre mis motivaciones y lo que aspiro a lograr como presidente.</p>
                 </div>
                 <div class="about-container">
+                    <div class="candidate-image-area order-lg-2 order-1">
+                        <div id="candidatePhoto" class="background" style="background-image: url('utils/tulio.png');">
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                            <button id="changeImageButton" class="change-image-btn">Cambiar Imagen</button>
+                        </div>
+                         <p style="font-size:0.9em; color:var(--color-text-light); text-align:center;"><em>Tulio Ramirez, Candidato</em></p>
+                    </div>
                     <div class="content order-lg-1 order-2">
                         <p>
                             Durante años, he sido un miembro activo de esta comunidad, observando, participando y entendiendo las necesidades
                             que tenemos. Mi objetivo es transformar nuestro servidor en un referente de jugabilidad, equidad y diversión.
-                            Creo firmemente en [Menciona 2-3 valores clave: ej. la transparencia, la escucha activa, el desarrollo constante].
+                            Creo firmemente en la transparencia, la escucha activa y el desarrollo constante.
                         </p>
                         <div class="icon-box">
                             <div class="icon"><i class="fas fa-bullseye"></i></div>
                             <div>
-                                <h4 class="title"><a href="">Innovación Continua</a></h4>
-                                <p class="description">Implementar nuevas mecánicas y sistemas que mantengan el servidor fresco y emocionante.</p>
+                                <h4 class="title"><a href="#">Innovación Continua</a></h4>
+                                <p class="description">Implementar nuevas mecánicas y sistemas que mantengan el servidor fresco y emocionante para todos los jugadores.</p>
                             </div>
                         </div>
                         <div class="icon-box">
                             <div class="icon"><i class="fas fa-users"></i></div>
                             <div>
-                                <h4 class="title"><a href="">Comunidad Primero</a></h4>
-                                <p class="description">Fomentar un ambiente donde cada jugador se sienta escuchado y valorado.</p>
+                                <h4 class="title"><a href="#">Comunidad Primero</a></h4>
+                                <p class="description">Fomentar un ambiente donde cada jugador se sienta escuchado, valorado y parte fundamental de las decisiones.</p>
                             </div>
                         </div>
-                    </div>
-                    <div class="background order-lg-2 order-1" style="background-image: url('utils/tulio.png');">
+                         <div class="icon-box">
+                            <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                            <div>
+                                <h4 class="title"><a href="#">Justicia y Equidad</a></h4>
+                                <p class="description">Asegurar un trato justo para todos, con normativas claras y una administración imparcial.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="proposals">
+        <section id="proposals" class="fade-in-section">
             <div class="container">
                 <div class="section-header">
                     <h3>Mis Propuestas Clave</h3>
                     <p>Pilares fundamentales de mi plan de gobierno para mejorar nuestro servidor SA-MP.</p>
                 </div>
                 <div class="row">
-                    <div class="col-proposal"> <div class="box">
-                            <div class="icon"><img src="utils/economia.png" alt="Icono Economía" class="proposal-icon"></div>
-                            <h4 class="title"><a href="">Economía Renovada</a></h4>
+                    <div class="col-proposal">
+                        <div class="box">
+                            <div class="icon"><i class="fas fa-chart-line"></i></div>
+                            <h4 class="title"><a href="#">Economía Renovada</a></h4>
                             <p class="description">Revisión y ajuste de salarios, precios y sistemas de trabajos para una economía más balanceada y dinámica.</p>
                         </div>
                     </div>
                     <div class="col-proposal">
                         <div class="box">
-                            <div class="icon"><img src="utils/seguridad.png" alt="Icono Seguridad" class="proposal-icon"></div>
-                            <h4 class="title"><a href="">Seguridad y Justicia</a></h4>
+                            <div class="icon"><i class="fas fa-balance-scale"></i></div>
+                            <h4 class="title"><a href="#">Seguridad y Justicia</a></h4>
                             <p class="description">Fortalecimiento de las facciones legales, revisión de normativas y un sistema de administración más transparente.</p>
                         </div>
                     </div>
                     <div class="col-proposal">
                         <div class="box">
-                            <div class="icon"><img src="utils/eventos.png" alt="Icono Eventos" class="proposal-icon"></div>
-                            <h4 class="title"><a href="">Eventos y Rol Comunitario</a></h4>
+                            <div class="icon"><i class="fas fa-fist-raised"></i></div>
+                            <h4 class="title"><a href="#">Eventos y Rol Comunitario</a></h4>
                             <p class="description">Creación de un calendario de eventos semanales, incentivos para el rol creativo y apoyo a iniciativas comunitarias.</p>
                         </div>
                     </div>
@@ -522,7 +709,7 @@
             </div>
         </section>
 
-        <section id="projects">
+        <section id="projects" class="fade-in-section">
             <div class="container">
                 <div class="section-header">
                     <h3>Proyectos Destacados</h3>
@@ -530,48 +717,56 @@
                 </div>
                 <div class="portfolio-container">
                     <div class="portfolio-item">
-                        <img src="utils/centrocivico.jpeg" class="img-fluid" alt="Proyecto Nuevo Ayuntamiento">
+                        <div class="portfolio-image-wrap">
+                            <img src="utils/centrocivico.jpeg" class="img-fluid" alt="Proyecto Nuevo Ayuntamiento">
+                        </div>
                         <div class="portfolio-info">
-                            <h4>Nuevo Ayuntamiento</h4>
-                            <p>Rediseño para eventos y atención ciudadana.</p>
-                            <a href="utils/centrocivico.jpeg" data-gall="portfolioGallery" class="venobox preview-link" title="Nuevo Ayuntamiento"><i class="fas fa-plus"></i></a>
+                            <h4>Modernización del Ayuntamiento</h4>
+                            <p>Un espacio rediseñado para eventos cívicos y mejor atención al ciudadano virtual.</p>
+                            <a href="utils/centrocivico.jpeg" target="_blank" class="details-link" title="Ver Detalles"><i class="fas fa-link"></i></a>
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <img src="utils/centrocivicoo.jpg" class="img-fluid" alt="Nuevo centro civico">
+                         <div class="portfolio-image-wrap">
+                            <img src="utils/centrocivicoo.jpg" class="img-fluid" alt="Nuevo centro cívico">
+                        </div>
                         <div class="portfolio-info">
-                            <h4>Centro civico publico</h4>
-                            <p>Para fortalezer la comunidad.</p>
-                            <a href="utils/centrocivicoo.jpg" data-gall="portfolioGallery" class="venobox preview-link" title="centro civico"><i class="fas fa-plus"></i></a>
+                            <h4>Nuevo Centro Cívico Comunitario</h4>
+                            <p>Espacio polivalente para fomentar la interacción y el rol entre jugadores.</p>
+                            <a href="utils/centrocivicoo.jpg" target="_blank" class="details-link" title="Ver Detalles"><i class="fas fa-link"></i></a>
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <img src="utils/estadio.jpeg" class="img-fluid" alt="Zona de Eventos Deportivos">
+                        <div class="portfolio-image-wrap">
+                            <img src="utils/estadio.jpeg" class="img-fluid" alt="Zona de Eventos Deportivos">
+                        </div>
                         <div class="portfolio-info">
-                            <h4>Nueva Zona de Eventos</h4>
-                            <p>Estadio para eventos y competiciones.</p>
-                            <a href="utils/estadio.jpeg" data-gall="portfolioGallery" class="venobox preview-link" title="Zona de Eventos"><i class="fas fa-plus"></i></a>
+                            <h4>Complejo Deportivo y de Eventos</h4>
+                            <p>Un moderno estadio para competiciones, carreras y grandes eventos comunitarios.</p>
+                            <a href="utils/estadio.jpeg" target="_blank" class="details-link" title="Ver Detalles"><i class="fas fa-link"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="team">
+        <section id="team" class="fade-in-section">
             <div class="container">
                 <div class="section-header">
                     <h3>Mi Equipo de Confianza</h3>
-                    <p>Personas dedicadas que me acompañarán para hacer realidad esta visión (si aplica).</p>
+                    <p>Personas dedicadas y con experiencia que me acompañarán para hacer realidad esta visión.</p>
                 </div>
                 <div class="row">
                     <div class="col-team">
                         <div class="member">
                             <img src="utils/russell.png" class="img-fluid" alt="Miembro 1">
                             <div class="member-info">
-                                <h4>[Russell Tenpenny]</h4>
-                                <span>Secretario de Defensa.</span>
+                                <h4>Russell Tenpenny</h4>
+                                <span>Secretario de Defensa y Estrategia</span>
                                 <div class="social">
-                                  </div>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-discord"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -579,9 +774,24 @@
                         <div class="member">
                             <img src="utils/walter.png" class="img-fluid" alt="Miembro 2">
                             <div class="member-info">
-                                <h4>[Frank Underwood]</h4>
-                                <span>Vicepresidente.</span>
-                                <div class="social">
+                                <h4>Walter Guzman</h4>
+                                <span>Vicepresidente y Jefe de Gabinete</span>
+                                 <div class="social">
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-team">
+                        <div class="member">
+                            <img src="utils/eva.png" class="img-fluid" alt="Miembro 3">
+                            <div class="member-info">
+                                <h4>Eva Ramírez</h4>
+                                <span>Secretaria de Estado</span>
+                                 <div class="social">
+                                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="#"><i class="fas fa-envelope"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -590,7 +800,49 @@
             </div>
         </section>
 
-        <section id="contact">
+        <section id="testimonials" class="fade-in-section">
+            <div class="container">
+                <div class="section-header">
+                    <h3>Lo que Dice la Comunidad</h3>
+                    <p>Opiniones de ciudadanos que apoyan nuestra visión de cambio.</p>
+                </div>
+                <div class="row"> <div class="col-md-6 col-lg-4"> <div class="testimonial-item">
+                            <img src="utils/robert.png" class="testimonial-img" alt="">
+                            <h4>Robert King</h4>
+                            <p>
+                                <i class="fas fa-quote-left quote-icon-left"></i>
+                                Tulio siempre ha demostrado un compromiso real. Sus propuestas son lo que necesitamos.
+                                <i class="fas fa-quote-right quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
+                     <div class="col-md-6 col-lg-4">
+                        <div class="testimonial-item">
+                            <img src="utils/mark.png" class="testimonial-img" alt="">
+                            <h4>Mark King</h4>
+                            <p>
+                                <i class="fas fa-quote-left quote-icon-left"></i>
+                                Confío en su liderazgo para traer la innovación y justicia que tanto anhelamos.
+                                <i class="fas fa-quote-right quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
+                     <div class="col-md-6 col-lg-4 d-none d-lg-flex"> <div class="testimonial-item">
+                            <img src="utils/barnell.png" class="testimonial-img" alt="">
+                            <h4>Barnell Wright</h4>
+                            <p>
+                                <i class="fas fa-quote-left quote-icon-left"></i>
+                                Su plan para la economía y los eventos es exactamente lo que la ciudad necesita para revivir.
+                                <i class="fas fa-quote-right quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="contact" class="fade-in-section">
             <div class="container">
                 <div class="section-header">
                     <h3>Únete y Participa</h3>
@@ -599,34 +851,36 @@
                 <div class="contact-info-row">
                     <div class="contact-info-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <h3>En el Servidor</h3>
-                        <address>[Tu Nick en SA-MP]</address>
+                        <h3>En el Juego</h3>
+                        <address>Tulio Ramirez</address>
                     </div>
                     <div class="contact-info-item">
                         <i class="fab fa-discord"></i>
                         <h3>Discord</h3>
-                        <p><a href="https://discord.gg/wKFsCZebmT">[Usuario#0000]</a></p>
+                        <p><a href="https://discord.gg/wKFsCZebmT" target="_blank">[Servidor de Discord]</a></p>
                     </div>
                     <div class="contact-info-item">
                         <i class="fas fa-envelope"></i>
                         <h3>Foro / Mensajería</h3>
-                        <p><a href="https://discord.gg/wKFsCZebmT">[Tu Usuario en Foro]</a></p>
+                        <p><a href="mailto:contacto@tulioramirez.com">[Tu Email o Perfil de Foro]</a></p>
                     </div>
                 </div>
 
                 <div class="form">
-                    <form action="https://discord.gg/wKFsCZebmT" method="post" role="form" class="php-email-form">
+                     <form action="#" method="post" role="form" class="php-email-form">
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <input type="text" name="name" placeholder="Tu Nombre (En Juego)" required />
+                                <input type="text" name="name" class="form-control" placeholder="Tu Nombre (En Juego)" required />
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="text" name="discord_user" placeholder="Tu Usuario de Discord (Opcional)" />
+                                <input type="text" name="discord_user" class="form-control" placeholder="Tu Usuario de Discord (Opcional)" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <textarea name="message" rows="5" placeholder="Mensaje o Propuesta" required></textarea>
+                            <textarea class="form-control" name="message" rows="6" placeholder="Mensaje o Propuesta" required></textarea>
                         </div>
+                        <div class="my-3">
+                            </div>
                         <div class="text-center"><button type="submit">Enviar Mensaje</button></div>
                     </form>
                 </div>
@@ -637,128 +891,213 @@
     <footer id="footer">
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong>Tulio Ramirez</strong>. Todos los derechos reservados.
+                &copy; Copyright <strong><span>Tulio Ramirez</span></strong> <span id="currentYear"></span>. Todos los derechos reservados.
             </div>
             <div class="credits">
-                Diseñado con <i class="fas fa-heart text-red"></i> para la comunidad de Gotham City
+                Diseñado con <i class="fas fa-heart text-red"></i> para la comunidad de Gotham City por <a href="#">Russell Tenpenny</a>
             </div>
         </div>
     </footer>
 
-    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-    <nav id="mobile-nav"></nav> <script>
+    <a href="#" class="back-to-top"><i class="fas fa-chevron-up"></i></a>
+    <nav id="mobile-nav"></nav>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const header = document.getElementById('header');
-            const headerHeight = header ? header.offsetHeight : 0; // Obtener altura real del header
-
-            // Botón "Volver Arriba"
+            const headerHeight = header ? header.offsetHeight : 75;
             const backToTopButton = document.querySelector('.back-to-top');
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const mobileNavContainer = document.getElementById('mobile-nav');
+            const currentYearSpan = document.getElementById('currentYear');
+
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+
+            // Header Scrolled
+            function handleScroll() {
+                if (window.scrollY > 50) {
+                    if(header) header.classList.add('header-scrolled');
+                    if(backToTopButton) backToTopButton.classList.add('active');
+                } else {
+                    if(header) header.classList.remove('header-scrolled');
+                    if(backToTopButton) backToTopButton.classList.remove('active');
+                }
+            }
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); // Ejecutar al cargar por si la página ya está scrolleada
+
+            // Back to Top Button
             if (backToTopButton) {
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 100) {
-                        backToTopButton.style.display = 'block';
-                    } else {
-                        backToTopButton.style.display = 'none';
-                    }
-                });
                 backToTopButton.addEventListener('click', (e) => {
                     e.preventDefault();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             }
 
-            // Smooth scroll para los enlaces del menú
-            const navMenuLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
-            navMenuLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    let targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        let elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                        let offsetPosition = elementPosition - headerHeight;
-                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                        // Cerrar menú móvil si está abierto
-                        if (document.body.classList.contains('mobile-nav-active')) {
-                            document.body.classList.remove('mobile-nav-active');
-                            const toggleIcon = document.querySelector('#mobile-nav-toggle i');
-                            if (toggleIcon) toggleIcon.className = 'fas fa-bars'; // Reset icon
+            // Smooth scroll para los enlaces del menú y otros anclajes
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    // Asegurarse que no es solo "#" (usado por algunos componentes vacíos)
+                    if (href && href.length > 1 && href.startsWith('#')) {
+                        const targetElement = document.querySelector(href);
+                        if (targetElement) {
+                            e.preventDefault();
+                            let elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                            let offsetPosition = elementPosition - headerHeight;
+
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+
+                            // Cerrar menú móvil si está activo y el enlace es del menú móvil
+                            if (document.body.classList.contains('mobile-nav-active') && this.closest('#mobile-nav')) {
+                                document.body.classList.remove('mobile-nav-active');
+                                if(mobileNavToggle) {
+                                    mobileNavToggle.querySelector('.fa-bars').style.display = 'inline-block';
+                                    mobileNavToggle.querySelector('.fa-times').style.display = 'none';
+                                }
+                            }
                         }
                     }
                 });
             });
 
-            // Menú móvil
-            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
-            const mobileNavContainer = document.getElementById('mobile-nav'); // Contenedor vacío
 
+            // Menú móvil
             if (mobileNavToggle && mobileNavContainer) {
                 const desktopNav = document.querySelector('#nav-menu-container ul.nav-menu');
                 if (desktopNav) {
-                    mobileNavContainer.innerHTML = '<ul>' + desktopNav.innerHTML + '</ul>'; // Clonar menú
+                    // Clonar menú solo si no existe ya en mobileNavContainer
+                    if (!mobileNavContainer.querySelector('ul')) {
+                        const ul = document.createElement('ul');
+                        ul.innerHTML = desktopNav.innerHTML;
+                        mobileNavContainer.appendChild(ul);
+                    }
                 }
+
+                const barsIcon = mobileNavToggle.querySelector('.fa-bars');
+                const timesIcon = mobileNavToggle.querySelector('.fa-times');
+                if(barsIcon && timesIcon) timesIcon.style.display = 'none'; // Ocultar X inicialmente
 
                 mobileNavToggle.addEventListener('click', function() {
                     document.body.classList.toggle('mobile-nav-active');
-                    const toggleIcon = this.querySelector('i');
-                    if (document.body.classList.contains('mobile-nav-active')) {
-                        toggleIcon.className = 'fas fa-times'; // Cambiar a icono X
-                    } else {
-                        toggleIcon.className = 'fas fa-bars'; // Cambiar a icono barras
+                    if (barsIcon && timesIcon) {
+                        if (document.body.classList.contains('mobile-nav-active')) {
+                            barsIcon.style.display = 'none';
+                            timesIcon.style.display = 'inline-block';
+                        } else {
+                            barsIcon.style.display = 'inline-block';
+                            timesIcon.style.display = 'none';
+                        }
                     }
                 });
 
                 // Cerrar menú móvil al hacer clic en un enlace dentro de él
                 mobileNavContainer.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', function(e) {
-                         // El smooth scroll ya se maneja arriba, solo cerramos el menú
+                    link.addEventListener('click', function() {
                         if (document.body.classList.contains('mobile-nav-active')) {
+                            // El smooth scroll ya se maneja arriba, solo cerramos
                             document.body.classList.remove('mobile-nav-active');
-                            const toggleIcon = document.querySelector('#mobile-nav-toggle i');
-                            if (toggleIcon) toggleIcon.className = 'fas fa-bars';
+                             if (barsIcon && timesIcon) {
+                                barsIcon.style.display = 'inline-block';
+                                timesIcon.style.display = 'none';
+                            }
                         }
                     });
                 });
             }
 
-            // Activar link del menú según la sección visible al hacer scroll (opcional, más avanzado)
-            // Esta es una implementación simple, puede necesitar ajustes
+            // Activar link del menú según la sección visible al hacer scroll
             const sections = document.querySelectorAll('section[id]');
-            window.addEventListener('scroll', navHighlighter);
+            const navLi = document.querySelectorAll('#nav-menu-container ul li');
+            const mobileNavLi = document.querySelectorAll('#mobile-nav ul li');
 
             function navHighlighter() {
                 let scrollY = window.pageYOffset;
+                let currentSectionId = "";
+
                 sections.forEach(current => {
                     const sectionHeight = current.offsetHeight;
-                    const sectionTop = current.getBoundingClientRect().top + window.pageYOffset - headerHeight - 50; // 50px offset
-                    let sectionId = current.getAttribute('id');
+                    const sectionTop = current.offsetTop - headerHeight - 50; // Ajuste de offset
 
-                    if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                        document.querySelectorAll('.nav-menu a[href*=' + sectionId + ']').forEach(link => {
-                           link.parentElement.classList.add('menu-active');
-                        });
-                        document.querySelectorAll('#mobile-nav a[href*=' + sectionId + ']').forEach(link => {
-                           link.parentElement.classList.add('menu-active');
-                        });
-                    } else {
-                         document.querySelectorAll('.nav-menu a[href*=' + sectionId + ']').forEach(link => {
-                           link.parentElement.classList.remove('menu-active');
-                        });
-                        document.querySelectorAll('#mobile-nav a[href*=' + sectionId + ']').forEach(link => {
-                           link.parentElement.classList.remove('menu-active');
-                        });
+                    if (scrollY >= sectionTop && scrollY <= sectionTop + sectionHeight){
+                        currentSectionId = current.getAttribute('id');
                     }
                 });
-                 // Activar el primer enlace si estamos muy arriba
-                if (scrollY < sections[0].getBoundingClientRect().top + window.pageYOffset - headerHeight - 50) {
-                    document.querySelectorAll('.nav-menu li, #mobile-nav li').forEach(li => li.classList.remove('menu-active'));
-                    const firstLinkDesktop = document.querySelector('.nav-menu a[href="#hero"]');
-                    if(firstLinkDesktop) firstLinkDesktop.parentElement.classList.add('menu-active');
-                    const firstLinkMobile = document.querySelector('#mobile-nav a[href="#hero"]');
-                    if(firstLinkMobile) firstLinkMobile.parentElement.classList.add('menu-active');
+
+                // Si no hay sección activa (ej. estamos al final y es corto), o al principio.
+                if (currentSectionId === "" && scrollY < sections[0].offsetTop - headerHeight - 50) {
+                     currentSectionId = "hero"; // Activar "Inicio" por defecto
                 }
+
+
+                [navLi, mobileNavLi].forEach(lis => {
+                    lis.forEach(li => {
+                        const link = li.querySelector('a');
+                        if (link && link.getAttribute('href').substring(1) === currentSectionId) {
+                            li.classList.add('menu-active');
+                        } else {
+                            li.classList.remove('menu-active');
+                        }
+                    });
+                });
             }
-            navHighlighter(); // Llamar una vez al cargar
+            window.addEventListener('scroll', navHighlighter);
+            window.addEventListener('load', navHighlighter); // También al cargar
+
+
+            // Fade-in para secciones al hacer scroll
+            const fadeInSections = document.querySelectorAll('.fade-in-section');
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // No observar más una vez visible
+                    }
+                });
+            }, { rootMargin: "0px 0px -100px 0px" }); // Aparece un poco antes de llegar al viewport
+
+            fadeInSections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+
+
+            // Script para cambiar imagen del candidato (previsualización)
+            const imageUploadInput = document.getElementById('imageUpload');
+            const changeImageButton = document.getElementById('changeImageButton');
+            const candidatePhotoDiv = document.getElementById('candidatePhoto');
+
+            if (changeImageButton && imageUploadInput && candidatePhotoDiv) {
+                changeImageButton.addEventListener('click', () => {
+                    imageUploadInput.click(); // Simula clic en el input file
+                });
+
+                imageUploadInput.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            candidatePhotoDiv.style.backgroundImage = `url('${e.target.result}')`;
+                        }
+                        reader.readAsDataURL(file);
+                        // Aquí es donde enviarías 'file' a un servidor para guardarlo permanentemente.
+                        // Ejemplo:
+                        // const formData = new FormData();
+                        // formData.append('candidateImage', file);
+                        // fetch('/upload-candidate-image-endpoint', { method: 'POST', body: formData })
+                        //   .then(response => response.json())
+                        //   .then(data => console.log('Success:', data))
+                        //   .catch(error => console.error('Error:', error));
+                        alert("Imagen previsualizada. Para guardarla permanentemente, se necesitaría integración con un servidor.");
+                    } else {
+                        alert("Por favor, selecciona un archivo de imagen válido.");
+                    }
+                });
+            }
 
         });
     </script>
